@@ -84,146 +84,174 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             // Animated background elements
             ...List.generate(6, (index) => _buildFloatingElement(index, size)),
             
-            // Main content with glassmorphism
-            Center(
-              child: FadeTransition(
-                opacity: _fadeAnimation,
-                child: ScaleTransition(
-                  scale: _scaleAnimation,
-                  child: Container(
-                    width: size.width > 600 ? 500 : size.width * 0.9,
-                    margin: const EdgeInsets.all(24),
-                    decoration: AppTheme.glassDecoration,
-                    child: Padding(
-                      padding: const EdgeInsets.all(40),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          // Animated logo with pulse effect
-                          AnimatedBuilder(
-                            animation: _pulseAnimation,
-                            builder: (context, child) {
-                              return Transform.scale(
-                                scale: _pulseAnimation.value,
-                                child: Container(
-                                  padding: const EdgeInsets.all(24),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                      colors: AppTheme.secondaryGradient,
-                                    ),
-                                    shape: BoxShape.circle,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: AppTheme.secondaryColor.withOpacity(0.4),
-                                        blurRadius: 20,
-                                        offset: const Offset(0, 8),
+            // Main content with glassmorphism - using SingleChildScrollView to prevent overflow
+            SingleChildScrollView(
+              child: Container(
+                height: size.height,
+                child: Center(
+                  child: FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: ScaleTransition(
+                      scale: _scaleAnimation,
+                      child: Container(
+                        width: size.width > 600 ? 500 : size.width * 0.9,
+                        margin: const EdgeInsets.all(24),
+                        decoration: AppTheme.glassDecoration,
+                        child: Padding(
+                          padding: const EdgeInsets.all(24),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Animated logo with pulse effect
+                              AnimatedBuilder(
+                                animation: _pulseAnimation,
+                                builder: (context, child) {
+                                  return Transform.scale(
+                                    scale: _pulseAnimation.value,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(20),
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                          colors: AppTheme.secondaryGradient,
+                                        ),
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: AppTheme.secondaryColor.withOpacity(0.4),
+                                            blurRadius: 20,
+                                            offset: const Offset(0, 8),
+                                          ),
+                                        ],
                                       ),
+                                      child: const Icon(
+                                        Icons.eco,
+                                        size: 60,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              const SizedBox(height: 24),
+                              
+                              // Title with enhanced contrast
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.white.withOpacity(0.9),
+                                      Colors.white.withOpacity(0.7),
                                     ],
                                   ),
-                                  child: const Icon(
-                                    Icons.eco,
-                                    size: 80,
-                                    color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: Colors.white.withOpacity(0.3),
+                                    width: 2,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 20,
+                                      offset: const Offset(0, 10),
+                                    ),
+                                  ],
+                                ),
+                                child: ShaderMask(
+                                  shaderCallback: (bounds) => LinearGradient(
+                                    colors: AppTheme.primaryGradient,
+                                  ).createShader(bounds),
+                                  child: Text(
+                                    'BLedger',
+                                    style: TextStyle(
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      letterSpacing: 1.5,
+                                    ),
                                   ),
                                 ),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 32),
-                          
-                          // Title with gradient text
-                          ShaderMask(
-                            shaderCallback: (bounds) => LinearGradient(
-                              colors: AppTheme.primaryGradient,
-                            ).createShader(bounds),
-                            child: Text(
-                              'BLedger',
-                              style: TextStyle(
-                                fontSize: 48,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                letterSpacing: 2.0,
                               ),
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          
-                          // Subtitle
-                          Text(
-                            'The Blue Carbon Registry',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white.withOpacity(0.9),
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                          const SizedBox(height: 32),
-                          
-                          // Description
-                          Text(
-                            'A decentralized platform for verifiable carbon credits\nPowered by blockchain technology',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white.withOpacity(0.8),
-                              height: 1.6,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 40),
-                          
-                          // Enhanced connect button
-                          Container(
-                            width: double.infinity,
-                            height: 56,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: AppTheme.secondaryGradient,
-                              ),
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppTheme.secondaryColor.withOpacity(0.4),
-                                  blurRadius: 15,
-                                  offset: const Offset(0, 8),
-                                ),
-                              ],
-                            ),
-                            child: ElevatedButton.icon(
-                              onPressed: () => _onConnectWalletPressed(context),
-                              icon: const Icon(Icons.account_balance_wallet, size: 24),
-                              label: const Text(
-                                'Connect Wallet',
+                              const SizedBox(height: 8),
+                              
+                              // Subtitle
+                              Text(
+                                'The Blue Carbon Registry',
                                 style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white.withOpacity(0.9),
                                   letterSpacing: 0.5,
                                 ),
                               ),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.transparent,
-                                foregroundColor: Colors.white,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
+                              const SizedBox(height: 20),
+                              
+                              // Description
+                              Text(
+                                'A decentralized platform for verifiable carbon credits\nPowered by blockchain technology',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white.withOpacity(0.8),
+                                  height: 1.4,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 28),
+                              
+                              // Enhanced connect button
+                              Container(
+                                width: double.infinity,
+                                height: 48,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: AppTheme.secondaryGradient,
+                                  ),
                                   borderRadius: BorderRadius.circular(16),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppTheme.secondaryColor.withOpacity(0.4),
+                                      blurRadius: 15,
+                                      offset: const Offset(0, 8),
+                                    ),
+                                  ],
+                                ),
+                                child: ElevatedButton.icon(
+                                  onPressed: () => _onConnectWalletPressed(context),
+                                  icon: const Icon(Icons.account_balance_wallet, size: 20),
+                                  label: const Text(
+                                    'Connect Wallet',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 0.5,
+                                    ),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.transparent,
+                                    foregroundColor: Colors.white,
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          
-                          // Features row
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              _buildFeatureIcon(Icons.verified, 'Verified'),
-                              _buildFeatureIcon(Icons.security, 'Secure'),
-                              _buildFeatureIcon(Icons.trending_up, 'Transparent'),
+                              const SizedBox(height: 20),
+                              
+                              // Features row
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildFeatureIcon(Icons.verified, 'Verified'),
+                                  _buildFeatureIcon(Icons.security, 'Secure'),
+                                  _buildFeatureIcon(Icons.trending_up, 'Transparent'),
+                                ],
+                              ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
@@ -280,7 +308,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.2),
             shape: BoxShape.circle,
@@ -292,15 +320,15 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           child: Icon(
             icon,
             color: Colors.white,
-            size: 20,
+            size: 16,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 6),
         Text(
           label,
           style: TextStyle(
             color: Colors.white.withOpacity(0.8),
-            fontSize: 12,
+            fontSize: 10,
             fontWeight: FontWeight.w500,
           ),
         ),
