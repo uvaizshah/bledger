@@ -4,6 +4,7 @@ import 'screens/welcome_screen.dart';
 import 'screens/developer_dashboard.dart';
 import 'screens/public_dashboard.dart';
 import 'providers/wallet_provider.dart';
+import 'theme/app_theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,20 +22,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'BLedger',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.blue,
-            brightness: Brightness.light,
-          ),
-          useMaterial3: true,
-        ),
-        darkTheme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.blue,
-            brightness: Brightness.dark,
-          ),
-          useMaterial3: true,
-        ),
+        theme: AppTheme.getLightTheme(),
+        darkTheme: AppTheme.getDarkTheme(),
         themeMode: ThemeMode.system,
         home: const WelcomeScreen(),
         routes: {
